@@ -23,7 +23,7 @@ Preprocessor instructions can be used to create different variations of your con
 ```
 The prefix can be defined in the `preprocessor.toml`. The following commands can be used:
 
-- `IF` *expr*
+#### `IF` *expr*
 
   If *expr* evaluates to `truish` all lines until an `ELSE` or `ENDIF` are transfered
   to the processed file. If *expr* evaluates to a `falsy` value, the following lines
@@ -38,7 +38,7 @@ The prefix can be defined in the `preprocessor.toml`. The following commands can
   #~ ENDIF
   ```
 
-- `IFDEF` *var*
+#### `IFDEF` *var*
 
   Like `IF` but *var* is considered `truish`, if *var* is defined. That is, *var* contains
   more than just whitespaces. Thus the only thing, that will evaluate to `falsy` is an
@@ -51,11 +51,11 @@ The prefix can be defined in the `preprocessor.toml`. The following commands can
   #~ ENDIF
   ```
 
-- `IFNDEF` *var*
+#### `IFNDEF` *var*
 
   The opposite of `IFDEF`, everything but whitespaces is considered `falsy`
 
-- `#` *comment*
+#### `#` *comment*
 
   This can be used to comment the source configuration file. I.e.:
   ```json

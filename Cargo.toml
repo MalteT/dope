@@ -11,6 +11,12 @@ toml = "0.5.5"
 regex = "1.3.1"
 colored = "1.9.0"
 lazy_static = "1.4.0"
+structopt = "0.3.5"
+failure = "0.1.6"
+
+[dependencies.textwrap]
+version = "0.11.0"
+features = ["term_size"]
 
 [dependencies.serde]
 version = "1.0.103"
