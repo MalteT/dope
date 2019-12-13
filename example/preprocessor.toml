@@ -1,0 +1,66 @@
+# Default escape sequences to use. (Optional)
+# This has to be an array containing the `start` and `end` escapes.
+# The default is unset.
+default_escape = ["+++", "+++"]
+# Default line prefix used in the configuration files. (Optional)
+# This prefix starts lines, which should be interpreted by the preprocessor.
+# It is recommended to use the prefix used for starting line comments
+# with an additional character or string. Use, for example `#?`, `#@` or `#PRE`,
+# when handling a configuration language that uses `#` to start a comment. Think TOML.
+# But you may choose any character sequence, i.e. `PREPROCESSME`, to start
+# preprocessor instructions. You may define a global default prefix and use it throughout
+# your configuration files or define a prefix per file. If no prefix is defined
+# because neither the `default_prefix` nor the file-specific prefix is set
+# no line preprocessing takes place. The default is unset.
+default_prefix = "//?"
+# Should instructions be removed from the final file? (Optional)
+# Disabling this might potentially invalidate your configuration file,
+# if the defined `prefix` does not start with a line comment, i.e. `prefix = //~`
+# with `//` starting a comment. This option enables the usage of comments in
+# languages, that have no means of defining a comment. Think JSON. The default is `true`.
+default_remove_instructions = true
+# Substitutions to replace in all configuration files. (Optional)
+# Substitution keys are only recognized between "escapes".
+# Let '{{{' and '}}}' be the escapes used in this example. If a susbstition
+# of the form `key = value` exists, all occurences of '{{{key}}}' are replaced
+# by 'value'. All values must contain valid unicode.
+[substitutions]
+# A simple substitution, replacing RED with the hex color value for red.
+RED = "#FF0000"
+# Replacing all mentions of FULL_NAME by my name.
+FULL_NAME = "MAX MUSTERMANN"
+# Add some smile.
+SMILEY = ";)"
+
+
+# The heart of this configuration file. (Optional)
+# Any number of configuration file configurations
+# may be specified.
+[[config]]
+# The source for the configuration. (Mandatory)
+# The path may contain any number of environment variables.
+# But they must only contain upper- and lowercase letters
+# and an underscore (_). All environment variables must contain valid unicode.
+# Example 1:
+#   source = "$HOME/.awesome.config"
+# Example 2:
+#   source = "$XDG_CONFIG_HOME/awesome/awesome.config"
+source = "./awesome.config"
+# The target to of the configuration. (Mandatory)
+# The preprocessor will try to create a link there, that points
+# to the preprocessed configuration file. See the description of `source`
+# for more details.
+target = "./awesome"
+# Escape sequences to overwrite the default values, if any. (Optional)
+escape = ["---", "???"]
+# Line prefix to overwrite the default value, if any. (Optional)
+prefix = "#!"
+# Remove instructions. Overwrites the default value, if any. (Optional)
+remove_instructions = true
+
+
+# Another more minimal example.
+[[config]]
+source = "./great.conf"
+target = "./great.conf~$TERM"
+
