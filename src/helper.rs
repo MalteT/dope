@@ -1,5 +1,5 @@
+use crate::error::{Error, Result};
 use std::path::Path;
-use crate::error::{Result, Error};
 
 /// Construct a linker function for unix systems.
 #[cfg(unix)]

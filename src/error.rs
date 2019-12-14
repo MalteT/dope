@@ -1,8 +1,9 @@
-use toml::de::Error as TomlDeError;
 use failure::Fail;
 use regex::Error as RegexError;
+use toml::de::Error as TomlDeError;
 
 use std::io::Error as IOError;
+use std::path::Path;
 
 pub type Result<T> = ::std::result::Result<T, Error>;
 
@@ -25,4 +26,19 @@ pub enum Error {
         _1, _0, _2
     )]
     FailedToCreateTargetLink(String, String, #[cause] IOError),
+}
+
+impl Error {
+    pub fn as_load_config(ioe: IOError) -> Self {
+        Error::FailedToLoadConfiguration(ioe)
+    }
+    pub fn as_failed_link<P1, P2>(src: P1, dst: P2, ioe: IOError) -> Self
+    where
+        P1: AsRef<Path>,
+        P2: AsRef<Path>,
+    {
+        let src = src.as_ref().to_string_lossy();
+        let dst = dst.as_ref().to_string_lossy();
+        Error::FailedToCreateTargetLink(src.as_ref().into(), dst.as_ref().into(), ioe)
+    }
 }
