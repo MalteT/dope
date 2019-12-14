@@ -4,15 +4,9 @@ Preprocess and link your dotfiles using a simple configuration and an easy prepr
 
 ## Preprocessing
 
-### Definitions
-
-- Source: Original
-- Processed File: After preprocessor
-- Config: Final configuration file
-
 The preprocessing is split into two main operations.
 
-1. **Evaluating preprocessor** instructions and
+1. **Evaluating preprocessor instructions** and
 2. **Inserting Substitutions**
 
 ## Evaluating preprocessor instructions
@@ -55,6 +49,40 @@ sea: false
 
 The opposite of `IFDEF`, everything but whitespaces is considered `falsy`
 
+#### `ASK` *question*
+
+If you want to let the user select a part of the configuration file you can use the `ASK` instruction. The *question* will be shown to the user with the possible options he may choose from. The options are given by `OPTION`-lines. The selection is ended by an `ENDASK`-line. I.e. with `prefix = "#~"` given:
+```
+#~ ASK What's your favourite color?
+#~ OPTION RED
+DEFAULT_COLOR=#FF0000
+#~ OPTION GREEN
+DEFAULT_COLOR=#00FF00
+#~ OPTION BLUE
+DEFAULT_COLOR=#0000FF
+#~ ENDASK
+```
+The above example would display a prompt like this:
+```text
+ASK : What's your favourite color?
+    :   1) RED
+    :   2) GREEN
+    :   3) BLUE
+    : Enter a number: [1-3] >
+```
+If no `OPTION`-line is present, the user will be prompted with the *quest* and can answer `yes` or `no`, deciding whether to include the lines between `ASK` and `ENDASK`. **Note**: If the same *question* with the same options appears more than once, the choosen option will be used for all subsequent occurences. This even works across configuration files.
+```
+#~ ASK Is this a laptop?
+battery_percentage_display = true
+#~ ENDASK
+
+[...]
+
+#~ ASK Is this a laptop?
+cpu_frequency = "lowest"
+#~ ENDASK
+```
+
 #### `#` *comment*
 
 This can be used to comment the source configuration file. I.e.:
@@ -71,7 +99,7 @@ This can be used to comment the source configuration file. I.e.:
 
 A *var* is any valid unicode string. Before evaluation of *var*, all enviroment variables are expanded. Environment variables may only contain the characters `a-z`, `A-Z` and `_`. Two forms are understood: `${ENV_VARIABLE}` and `$ENV_VARIABLE`. Commands are also expanded and need to specified like this: `$(SOME command --with options | and --stuff)` All closing parenthesis `)` need to be escaped with a backslash. The command is run and replaced by its standard output.
 
-An *expr* is always of the form "*expr* == *expr*". Both sides are expanded as mentioned above and checked for string equality, that is: All characters have to be equal.
+An *expr* is always of the form "*expr_1* == *expr_2*". Both sides are expanded as mentioned above and checked for string equality, that is: All characters have to be equal.
 
 ## Inserting substitutions
 
