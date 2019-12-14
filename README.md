@@ -99,7 +99,7 @@ This can be used to comment the source configuration file. I.e.:
 
 A *var* is any valid unicode string. Before evaluation of *var*, all enviroment variables are expanded. Environment variables may only contain the characters `a-z`, `A-Z` and `_`. Two forms are understood: `${ENV_VARIABLE}` and `$ENV_VARIABLE`. Commands are also expanded and need to specified like this: `$(SOME command --with options | and --stuff)` All closing parenthesis `)` need to be escaped with a backslash. The command is run and replaced by its standard output.
 
-An *expr* is always of the form "*expr_1* == *expr_2*". Both sides are expanded as mentioned above and checked for string equality, that is: All characters have to be equal.
+An *expr* is always of the form "*var_1* == *var_2*". Both sides are expanded as mentioned above and checked for string equality, that is: All characters have to be equal.
 
 ## Inserting substitutions
 
