@@ -85,7 +85,7 @@ fn subst_replacer() -> impl FnMut(&Captures) -> String {
         };
         if output.status.success() {
             let output = String::from_utf8_lossy(&output.stdout);
-            format!("{}{}", prefix, output)
+            format!("{}{}", prefix, output.trim_end_matches("\n"))
         } else {
             // TODO
             warn!("Process {:?} exited abnormally", command);

@@ -1,4 +1,3 @@
-use colored::Colorize;
 use structopt::StructOpt;
 
 use std::path::PathBuf;
@@ -11,6 +10,7 @@ mod env;
 mod error;
 mod expand;
 mod helper;
+mod parser;
 
 use config::Config;
 

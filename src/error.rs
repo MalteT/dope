@@ -3,7 +3,7 @@ use regex::Error as RegexError;
 use toml::de::Error as TomlDeError;
 
 use std::io::Error as IOError;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub type Result<T> = ::std::result::Result<T, Error>;
 
@@ -26,6 +26,18 @@ pub enum Error {
         _1, _0, _2
     )]
     FailedToCreateTargetLink(String, String, #[cause] IOError),
+    #[fail(display = "Target already exists: {:?}", _0)]
+    TargetAlreadyExists(PathBuf),
+    #[fail(display = "Unrecognized preprocessor instruction: {:?}", _0)]
+    UnrecognizedPreprocessorInstruction(String),
+    #[fail(display = "No EndIf found")]
+    NoEndIfFound,
+    #[fail(display = "Stray command found in line {}: {}", _0, _1)]
+    StrayCmdFound(usize, String),
+    #[fail(display = "Failed to read user input: {}", _0)]
+    FailedToReadUserInput(IOError),
+    #[fail(display = "Missing ending command for line {}: {}", _0, _1)]
+    MissingEndingInstruction(usize, String),
 }
 
 impl Error {

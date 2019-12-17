@@ -1,7 +1,7 @@
 # Default escape sequences to use. (Optional)
 # This has to be an array containing the `start` and `end` escapes.
 # The default is unset.
-default_escape = ["+++", "+++"]
+default_escape = ["{{{", "}}}"]
 # Default line prefix used in the configuration files. (Optional)
 # This prefix starts lines, which should be interpreted by the preprocessor.
 # It is recommended to use the prefix used for starting line comments
@@ -12,7 +12,7 @@ default_escape = ["+++", "+++"]
 # your configuration files or define a prefix per file. If no prefix is defined
 # because neither the `default_prefix` nor the file-specific prefix is set
 # no line preprocessing takes place. The default is unset.
-default_prefix = "//?"
+default_prefix = "//~"
 # Should instructions be removed from the final file? (Optional)
 # Disabling this might potentially invalidate your configuration file,
 # if the defined `prefix` does not start with a line comment, i.e. `prefix = //~`
@@ -52,9 +52,9 @@ source = "./awesome.config"
 # for more details.
 target = "./awesome"
 # Escape sequences to overwrite the default values, if any. (Optional)
-escape = ["---", "???"]
+escape = ["---", "---"]
 # Line prefix to overwrite the default value, if any. (Optional)
-prefix = "#!"
+prefix = "#~"
 # Remove instructions. Overwrites the default value, if any. (Optional)
 remove_instructions = true
 
