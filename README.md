@@ -1,3 +1,4 @@
+![logo](static/logo.png)
 # **dope**, the **do**tfile-**p**r**e**processor.
 
 Preprocess and link your dotfiles using a simple configuration and an easy preprocessor syntax. See the [`example`](./example) directory for a working example and a commented configuration file. The example configuration files contain usage examples of preprocessor instructions.
