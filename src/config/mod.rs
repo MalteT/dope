@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use std::collections::HashMap;
 use std::fs;
-use std::path::{Path};
+use std::path::Path;
 
 mod file_config;
 
@@ -18,25 +18,29 @@ pub type Substitutions = HashMap<String, String>;
 /// if those were defined.
 #[derive(Debug)]
 pub struct Config {
+    /// The list of files to process.
     pub file_configurations: Vec<FileConfig>,
+    /// The list of global substitutions.
     pub substitutions: Substitutions,
 }
 
-/// The complete configuration file.
+/// The raw, loaded TOML configuration file.
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct RawConfig {
+    /// Default escape surrounding substitutions.
     default_escape: Option<Escape>,
+    /// Default line prefix for commands.
     default_prefix: Option<String>,
-    #[serde(default = "default_remove_instrucions")]
+    /// Default value for removing commands. If true, commands
+    /// will be cut from the output file. Defaults to true.
+    #[serde(default = "default_true")]
     default_remove_instructions: bool,
+    /// The list of files to process.
     #[serde(default, rename = "config")]
     file_configurations: Vec<FileConfig>,
+    /// The list of global substitutions.
     #[serde(default)]
     substitutions: Option<Substitutions>,
-}
-
-fn default_remove_instrucions() -> bool {
-    true
 }
 
 impl RawConfig {
@@ -53,26 +57,19 @@ impl Config {
     pub fn load<P: AsRef<Path>>(config_path: P) -> Result<Self> {
         RawConfig::load(config_path).map(Config::from)
     }
-    /// Preprocess all necessary files.
+    /// Process all files.
     ///
-    /// This function iterates over all [`Config.config`]. The original file is loaded,
-    /// replacements are applied and the file is written to a temporary location.
-    pub fn preprocess_files(&self, opt: &Opt) -> Result<()> {
+    /// This will execute all preprocessing instructions and link the output file.
+    pub fn process_files(&self, opt: &Opt) -> Result<()> {
         // Iterate over all config file entries
         for fc in &self.file_configurations {
+            // Preprocess the current file
             match fc.preprocess(&self.substitutions, opt) {
-                Ok(_) => {},
-                Err(e) => error!("{}", e),
-            }
-        }
-        Ok(())
-    }
-    /// Link all temporary files to their final destination.
-    pub fn link_files(&self, opt: &Opt) -> Result<()> {
-        // Iterate over all file configurations
-        for fc in &self.file_configurations {
-            match fc.create_link(opt) {
-                Ok(_) => {},
+                // Link the current file
+                Ok(_) => match fc.create_link(opt) {
+                    Ok(_) => {}
+                    Err(e) => error!("{}", e),
+                },
                 Err(e) => error!("{}", e),
             }
         }
@@ -97,4 +94,8 @@ impl From<RawConfig> for Config {
             substitutions,
         }
     }
+}
+
+fn default_true() -> bool {
+    true
 }

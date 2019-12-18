@@ -8,9 +8,9 @@ mod logging;
 mod config;
 mod env;
 mod error;
-mod expand;
 mod helper;
-mod parser;
+mod command;
+mod command_reader;
 
 use config::Config;
 
@@ -31,7 +31,9 @@ pub struct Opt {
 }
 
 fn main() {
+    // Load CLI options
     let opt = Opt::from_args();
+    // Load TOML configuration file
     let config = match Config::load(&opt.config_file) {
         Ok(config) => config,
         Err(e) => {
@@ -39,10 +41,9 @@ fn main() {
             process::exit(1);
         }
     };
-    if let Err(e) = config.preprocess_files(&opt) {
-        error!("Preprocessing returned an error: {}", e);
-    }
-    if let Err(e) = config.link_files(&opt) {
-        error!("Linking returned an error: {}", e);
+    // Process files
+    // All errors should have already been reported at this point
+    if let Err(_) = config.process_files(&opt) {
+        process::exit(1);
     }
 }

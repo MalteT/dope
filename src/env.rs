@@ -9,7 +9,6 @@
 //! To use an environment variable, one can use `$YOUR_ENV_VAR` or `${YOUR_ENV_VAR}`.
 //! `YOUR_ENV_VAR` may only contain the characters `a-z`, `A-Z` and `_` (Underscore).
 //! **Note**: All used variables must expand to valid Unicode!
-use colored::Colorize;
 use lazy_static::lazy_static;
 use regex::{Captures, Regex};
 
@@ -50,10 +49,7 @@ fn env_replacer() -> impl FnMut(&Captures) -> String {
         let key = &captures[2];
         let repl = match resolve_env(key) {
             Ok(repl) => repl,
-            Err(VarError::NotPresent) => {
-                warn!("Environment variable {:?} expands to nothing", key);
-                String::new()
-            }
+            Err(VarError::NotPresent) => String::new(),
             Err(VarError::NotUnicode(_)) => {
                 warn!("{:?} does not contain valid unicode", key);
                 String::new()
@@ -114,8 +110,8 @@ mod tests {
     #[cfg(unix)]
     #[test]
     fn test_expand_subst() {
-        assert_eq!(expand_subst("$(echo 'Hello World')"), "Hello World\n");
-        assert_eq!(expand_subst(" $(echo 'Hello World') "), " Hello World\n ");
+        assert_eq!(expand_subst("$(echo 'Hello World')"), "Hello World");
+        assert_eq!(expand_subst(" $(echo 'Hello World') "), " Hello World ");
         assert_eq!(expand_subst(" $(echo -n 'Hello World') "), " Hello World ");
         assert_eq!(
             expand_subst(" \\$(echo -n 'Hello World') "),

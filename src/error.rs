@@ -30,8 +30,6 @@ pub enum Error {
     TargetAlreadyExists(PathBuf),
     #[fail(display = "Unrecognized preprocessor instruction: {:?}", _0)]
     UnrecognizedPreprocessorInstruction(String),
-    #[fail(display = "No EndIf found")]
-    NoEndIfFound,
     #[fail(display = "Stray command found in line {}: {}", _0, _1)]
     StrayCmdFound(usize, String),
     #[fail(display = "Failed to read user input: {}", _0)]
